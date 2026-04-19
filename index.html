@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription – Le Nik'As Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #ffd700;
+    --gold-dim: rgba(255,215,0,0.2);
+    --red: #c0392b;
+    --red-dark: #8b0000;
+    --cream: #f0e6c8;
+    --cream-dim: rgba(240,230,200,0.6);
+    --cream-faint: rgba(240,230,200,0.12);
+    --bg-dark: #080814;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg-dark);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── CURTAINS ── */
+  .curtain-left, .curtain-right {
+    position: fixed;
+    top: 0;
+    width: 55px;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .curtain-left {
+    left: 0;
+    background: linear-gradient(90deg, #6b0000 0%, #9b1515 60%, transparent 100%);
+  }
+  .curtain-right {
+    right: 0;
+    background: linear-gradient(270deg, #6b0000 0%, #9b1515 60%, transparent 100%);
+  }
+  .curtain-left::before, .curtain-right::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      180deg,
+      rgba(0,0,0,0.25) 0px,
+      rgba(0,0,0,0) 12px,
+      rgba(0,0,0,0.15) 24px
+    );
+  }
+
+  /* ── STARS BG ── */
+  .stars-bg {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(139,0,0,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(139,0,0,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(255,215,0,0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    text-align: center;
+    padding: 3rem 0 2rem;
+    animation: fadeDown 0.8s ease both;
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 7px 20px;
+    border-radius: 30px;
+    border: 1.5px solid var(--gold);
+    margin-bottom: 1.2rem;
+    box-shadow: 0 0 20px rgba(255,215,0,0.15);
+  }
+
+  .header-org {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--cream-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .brand-logo {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-shadow: 0 0 60px rgba(255,215,0,0.25), 0 2px 0 rgba(0,0,0,0.5);
+    margin-bottom: 2px;
+  }
+  .brand-logo span { color: #fff; }
+
+  .brand-sub {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    letter-spacing: 8px;
+    color: var(--cream);
+    opacity: 0.8;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .infinity-sign {
+    font-size: 32px;
+    color: var(--gold);
+    display: block;
+    margin: 4px 0 12px;
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+  .gold-divider {
+    width: 240px;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 1.5rem;
+  }
+
+  /* ── CATEGORY PILLS ── */
+  .cat-pills {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .cat-pill {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1.5px solid;
+  }
+  .cat-pill.piano   { color: #e74c3c; border-color: #e74c3c; background: rgba(231,76,60,0.1); }
+  .cat-pill.art     { color: #f39c12; border-color: #f39c12; background: rgba(243,156,18,0.1); }
+  .cat-pill.dj      { color: #27ae60; border-color: #27ae60; background: rgba(39,174,96,0.1); }
+  .cat-pill.content { color: #e67e22; border-color: #e67e22; background: rgba(230,126,34,0.1); }
+
+  /* ── FORM CARD ── */
+  .form-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--gold-dim);
+    border-radius: 20px;
+    padding: 2.5rem;
+    animation: fadeUp 0.8s 0.35s ease both;
+    backdrop-filter: blur(4px);
+  }
+
+  /* Progress */
+  .progress-wrap {
+    margin-bottom: 2rem;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--cream-dim);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .progress-track {
+    height: 3px;
+    background: rgba(255,215,0,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* Section titles */
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin: 0 0 1.2rem;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gold-dim);
+  }
+
+  .sep { height: 1px; background: var(--gold-dim); margin: 2rem 0; }
+
+  /* Grid */
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .g1 { margin-bottom: 16px; }
+
+  /* Labels & Inputs */
+  label.field-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    margin-bottom: 7px;
+  }
+  label.field-label .req { color: var(--red); }
+
+  input[type=text],
+  input[type=tel],
+  input[type=email],
+  input[type=url],
+  input[type=date],
+  select,
+  textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,215,0,0.2);
+    border-radius: 9px;
+    color: var(--cream);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold);
+    background: rgba(255,215,0,0.05);
+  }
+  input::placeholder, textarea::placeholder { color: rgba(240,230,200,0.25); }
+  select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ffd700' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  select option { background: #1a0810; color: var(--cream); }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+  /* Category cards */
+  .cat-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .cat-card {
+    border: 2px solid rgba(255,215,0,0.15);
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    display: block;
+    user-select: none;
+  }
+  .cat-card input[type=radio] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .cat-card .c-icon { font-size: 22px; margin-bottom: 7px; display: block; }
+  .cat-card .c-name { font-weight: 800; font-size: 13px; color: var(--cream); display: block; margin-bottom: 4px; }
+  .cat-card .c-prize { font-size: 11px; color: var(--gold); display: block; margin-bottom: 3px; }
+  .cat-card .c-fee { font-size: 10px; color: rgba(240,230,200,0.4); }
+  .cat-card:hover { border-color: rgba(255,215,0,0.4); background: rgba(255,215,0,0.03); }
+  .cat-card.selected { border-color: var(--gold); background: rgba(255,215,0,0.07); box-shadow: 0 0 20px rgba(255,215,0,0.1); }
+  .cat-card.selected .c-name { color: var(--gold); }
+
+  /* Frais box */
+  .frais-box {
+    background: rgba(255,215,0,0.06);
+    border: 1px solid rgba(255,215,0,0.25);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    transition: all 0.3s;
+  }
+  .frais-label { font-size: 13px; color: var(--cream-dim); }
+  .frais-note { font-size: 11px; color: rgba(240,230,200,0.35); margin-top: 3px; }
+  .frais-amount { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 700; color: var(--gold); }
+
+  /* Submit button */
+  .btn-submit {
+    width: 100%;
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 50%, var(--red) 100%);
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: 8px;
+    box-shadow: 0 0 30px rgba(192,57,43,0.3);
+  }
+  .btn-submit:hover {
+    background: linear-gradient(135deg, #e74c3c 0%, var(--red) 100%);
+    box-shadow: 0 0 40px rgba(255,215,0,0.2);
+    transform: translateY(-2px);
+  }
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* ── SUCCESS ── */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+  .success-trophy { font-size: 70px; display: block; margin-bottom: 1rem; animation: bounce 0.6s ease; }
+  @keyframes bounce {
+    0%   { transform: scale(0.5); opacity: 0; }
+    70%  { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+  .success-title { font-family: 'Cinzel', serif; font-size: 26px; color: var(--gold); margin-bottom: 10px; }
+  .success-msg { color: var(--cream-dim); font-size: 15px; line-height: 1.7; }
+  .success-msg strong { color: var(--cream); }
+  .success-info { margin-top: 1.5rem; font-size: 12px; color: rgba(240,230,200,0.4); line-height: 1.8; }
+  .btn-reset {
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 10px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: background 0.2s;
+  }
+  .btn-reset:hover { background: rgba(255,215,0,0.08); }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    text-align: center;
+    margin-top: 2.5rem;
+    color: rgba(240,230,200,0.35);
+    font-size: 12px;
+    line-height: 2;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+  .site-footer a { color: var(--gold); text-decoration: none; }
+
+  /* ── LOADING STATE ── */
+  .spinner {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,215,0,0.3);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── ERROR ── */
+  .field-error { font-size: 11px; color: #e74c3c; margin-top: 5px; display: none; }
+  input.invalid, select.invalid, textarea.invalid { border-color: #e74c3c !important; }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .brand-logo { font-size: 36px; }
+    .g2 { grid-template-columns: 1fr; }
+    .cat-cards { grid-template-columns: 1fr; }
+    .form-card { padding: 1.5rem; }
+    .curtain-left, .curtain-right { width: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="curtain-left"></div>
+<div class="curtain-right"></div>
+<div class="stars-bg"></div>
+
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-badge">Inscriptions ouvertes · 1er – 30 Avril 2026</div>
+    <p class="header-org">Le Nik'as Lounge &amp; CFP AS Communication présentent</p>
+    <h1 class="brand-logo">NIK'AS <span>CHALLENGE</span></h1>
+    <p class="brand-sub">Formulaire d'inscription</p>
+    <span class="infinity-sign">∞</span>
+    <div class="gold-divider"></div>
+  </header>
+
+  <!-- CATEGORY PILLS -->
+  <div class="cat-pills">
+    <span class="cat-pill piano">Piano Bar</span>
+    <span class="cat-pill art">Art Oratoire</span>
+    <span class="cat-pill dj">Mix DJ</span>
+    <span class="cat-pill content">Création de Contenus</span>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="form-card">
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Progression</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <form id="nc-form" novalidate>
+
+      <!-- Section 1 : Identité -->
+      <p class="section-title">Informations personnelles</p>
+
+      <div class="g2">
+        <div>
+          <label class="field-label">Nom <span class="req">*</span></label>
+          <input type="text" id="f-nom" name="nom" placeholder="Votre nom de famille" required>
+          <div class="field-error" id="err-nom">Ce champ est requis.</div>
+        </div>
+        <div>
+          <label class="field-label">Prénom(s) <span class="req">*</span></label>
+          <input type="text" id="f-prenom" name="prenom" placeholder="Votre prénom" required>
+          <div class="field-error" id="err-prenom">Ce champ est requis.</div>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div>
+          <label class="field-label">Date de naissance <span class="req">*</span></label>
+          <input type="date" id="f-dob" name="date_naissance" required>
+          <div class="field-error" id="err-dob">Ce champ est requis.</div>
+        </div>
+        <div>
+          <label class="field-label">Sexe <span class="req">*</span></label>
+          <select id="f-sexe" name="sexe" required>
+            <option value="">— Sélectionner —</option>
+            <option>Masculin</option>
+            <option>Féminin</option>
+          </select>
+          <div class="field-error" id="err-sexe">Ce champ est requis.</div>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <!-- Section 2 : Contacts -->
+      <p class="section-title">Coordonnées</p>
+
+      <div class="g2">
+        <div>
+          <label class="field-label">Téléphone <span class="req">*</span></label>
+          <input type="tel" id="f-tel" name="telephone" placeholder="+237 6XX XX XX XX" required>
+          <div class="field-error" id="err-tel">Ce champ est requis.</div>
+        </div>
+        <div>
+          <label class="field-label">WhatsApp</label>
+          <input type="tel" id="f-wa" name="whatsapp" placeholder="+237 6XX XX XX XX">
+        </div>
+      </div>
+
+      <div class="g1">
+        <label class="field-label">Email</label>
+        <input type="email" id="f-email" name="email" placeholder="exemple@email.com">
+      </div>
+
+      <div class="g2">
+        <div>
+          <label class="field-label">Ville de résidence <span class="req">*</span></label>
+          <input type="text" id="f-ville" name="ville" placeholder="Ex : Bafoussam" required>
+          <div class="field-error" id="err-ville">Ce champ est requis.</div>
+        </div>
+        <div>
+          <label class="field-label">Quartier</label>
+          <input type="text" id="f-quartier" name="quartier" placeholder="Ex : Baham">
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <!-- Section 3 : Catégorie -->
+      <p class="section-title">Catégorie de compétition <span class="req" style="color:#e74c3c">*</span></p>
+
+      <div class="cat-cards" id="cat-grid">
+        <label class="cat-card" id="card-piano">
+          <input type="radio" name="categorie" value="Piano Bar">
+          <span class="c-icon">🎹</span>
+          <span class="c-name">Piano Bar</span>
+          <span class="c-prize">🥇 300 000 · 🥈 150 000 · 🥉 50 000 FCFA</span>
+          <span class="c-fee">Inscription : 10 000 FCFA (groupes)</span>
+        </label>
+        <label class="cat-card" id="card-art">
+          <input type="radio" name="categorie" value="Art Oratoire">
+          <span class="c-icon">🎤</span>
+          <span class="c-name">Art Oratoire</span>
+          <span class="c-prize">🥇 100 000 · 🥈 50 000 · 🥉 25 000 FCFA</span>
+          <span class="c-fee">Inscription : 5 000 FCFA</span>
+        </label>
+        <label class="cat-card" id="card-dj">
+          <input type="radio" name="categorie" value="Mix DJ">
+          <span class="c-icon">🎧</span>
+          <span class="c-name">Mix DJ</span>
+          <span class="c-prize">🥇 150 000 · 🥈 75 000 · 🥉 50 000 FCFA</span>
+          <span class="c-fee">Inscription : 5 000 FCFA</span>
+        </label>
+        <label class="cat-card" id="card-content">
+          <input type="radio" name="categorie" value="Création de Contenus">
+          <span class="c-icon">📷</span>
+          <span class="c-name">Création de Contenus</span>
+          <span class="c-prize">🥇 150 000 · 🥈 75 000 · 🥉 50 000 FCFA</span>
+          <span class="c-fee">Inscription : 5 000 FCFA</span>
+        </label>
+      </div>
+      <div class="field-error" id="err-cat" style="display:none;margin-bottom:12px;">Veuillez sélectionner une catégorie.</div>
+
+      <!-- Frais box -->
+      <div class="frais-box">
+        <div>
+          <div class="frais-label">Frais d'inscription à payer sur place</div>
+          <div class="frais-note" id="frais-note">Sélectionnez une catégorie ci-dessus</div>
+        </div>
+        <div class="frais-amount" id="frais-amount">— FCFA</div>
+      </div>
+
+      <div class="sep"></div>
+
+      <!-- Section 4 : Profil artiste -->
+      <p class="section-title">Profil artiste</p>
+
+      <div class="g2">
+        <div>
+          <label class="field-label">Expérience <span class="req">*</span></label>
+          <select id="f-exp" name="experience" required>
+            <option value="">— Niveau —</option>
+            <option>Débutant (moins d'1 an)</option>
+            <option>Intermédiaire (1 à 3 ans)</option>
+            <option>Avancé (3 à 5 ans)</option>
+            <option>Expert (plus de 5 ans)</option>
+          </select>
+          <div class="field-error" id="err-exp">Ce champ est requis.</div>
+        </div>
+        <div>
+          <label class="field-label">Pseudo / Nom de scène</label>
+          <input type="text" id="f-pseudo" name="pseudo" placeholder="Nom de scène">
+        </div>
+      </div>
+
+      <div class="g1">
+        <label class="field-label">Lien vers vos réalisations</label>
+        <input type="url" id="f-link" name="lien_realisations" placeholder="YouTube, TikTok, Instagram, SoundCloud…">
+      </div>
+
+      <div class="g1">
+        <label class="field-label">Lettre de motivation</label>
+        <textarea id="f-motiv" name="motivation" placeholder="Pourquoi participez-vous au Nik'As Challenge ? (facultatif)"></textarea>
+      </div>
+
+      <div class="sep"></div>
+
+      <!-- Section 5 : Source -->
+      <p class="section-title">Informations complémentaires</p>
+
+      <div class="g1">
+        <label class="field-label">Comment avez-vous entendu parler du challenge ? <span class="req">*</span></label>
+        <select id="f-source" name="source" required>
+          <option value="">— Sélectionner —</option>
+          <option>Facebook / Instagram</option>
+          <option>WhatsApp</option>
+          <option>Bouche à oreille</option>
+          <option>Affiches / Flyers</option>
+          <option>École / Université</option>
+          <option>Autre</option>
+        </select>
+        <div class="field-error" id="err-source">Ce champ est requis.</div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-submit" id="btn-submit">
+        ✦ &nbsp;Confirmer mon inscription&nbsp; ✦
+      </button>
+
+    </form>
+
+    <!-- SUCCESS SCREEN -->
+    <div class="success-screen" id="success-screen">
+      <span class="success-trophy">🏆</span>
+      <h2 class="success-title">Inscription enregistrée !</h2>
+      <p class="success-msg">
+        Félicitations <strong id="success-name"></strong> !<br>
+        Votre candidature au Nik'As Challenge a bien été reçue.<br>
+        Vous serez contacté(e) pour la confirmation du paiement.
+      </p>
+      <p class="success-info">
+        📍 Carrefour Total D'en bas – Bafoussam (en face de la station Ola)<br>
+        📞 +237 698 20 80 20 &nbsp;·&nbsp; +237 677 16 86 26<br>
+        📅 Compétition : Mai – Juin 2026 (Mer. &amp; Jeu. à partir de 16h)
+      </p>
+      <button class="btn-reset" onclick="resetForm()">Inscrire un autre candidat</button>
+    </div>
+
+  </div><!-- /form-card -->
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="gold-divider" style="margin-bottom:1rem"></div>
+    📍 Carrefour Total D'en bas – Bafoussam (en face de la station Ola)<br>
+    📞 +237 698 20 80 20 &nbsp;·&nbsp; +237 677 16 86 26<br>
+    Suivez-nous : <a href="#">Chez Nik'as Lounge SARL</a>
+  </footer>
+
+</div><!-- /page-wrap -->
+
+<script>
+// ══════════════════════════════════════════════
+//  ⚠️  CONFIGURATION — REMPLACEZ CETTE URL PAR VOTRE URL APPS SCRIPT
+//  Étapes : voir le guide Google Sheets ci-joint
+// ══════════════════════════════════════════════
+const APPS_SCRIPT_URL = 'VOTRE_URL_APPS_SCRIPT_ICI';
+
+// ══════════════════════════════════════════════
+//  FRAIS PAR CATÉGORIE
+// ══════════════════════════════════════════════
+const fraisMap = {
+  'Piano Bar':              { amount: '10 000', note: 'Pour les groupes / ensembles musicaux' },
+  'Art Oratoire':           { amount: '5 000',  note: 'Par candidat individuel' },
+  'Mix DJ':                 { amount: '5 000',  note: 'Par candidat individuel' },
+  'Création de Contenus':   { amount: '5 000',  note: 'Par candidat individuel' },
+};
+
+// Champs requis pour la progression
+const requiredFields = ['f-nom','f-prenom','f-dob','f-sexe','f-tel','f-ville','f-exp','f-source'];
+
+// ── Sélection de catégorie
+document.querySelectorAll('.cat-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    card.querySelector('input[type=radio]').checked = true;
+    const val = card.querySelector('input').value;
+    const info = fraisMap[val];
+    if (info) {
+      document.getElementById('frais-amount').textContent = info.amount + ' FCFA';
+      document.getElementById('frais-note').textContent = info.note;
+    }
+    updateProgress();
+  });
+});
+
+// ── Progress bar
+function updateProgress() {
+  const filled = requiredFields.filter(id => {
+    const el = document.getElementById(id);
+    return el && el.value.trim() !== '';
+  }).length;
+  const catOk = !!document.querySelector('.cat-card.selected');
+  const total = requiredFields.length + 1;
+  const done  = filled + (catOk ? 1 : 0);
+  const pct   = Math.round((done / total) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent  = pct + '%';
+}
+
+requiredFields.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', updateProgress);
+  if (el) el.addEventListener('change', updateProgress);
+});
+
+// ── Validation
+function validate() {
+  let valid = true;
+  const checks = [
+    { id: 'f-nom',    err: 'err-nom'    },
+    { id: 'f-prenom', err: 'err-prenom' },
+    { id: 'f-dob',    err: 'err-dob'    },
+    { id: 'f-sexe',   err: 'err-sexe'   },
+    { id: 'f-tel',    err: 'err-tel'    },
+    { id: 'f-ville',  err: 'err-ville'  },
+    { id: 'f-exp',    err: 'err-exp'    },
+    { id: 'f-source', err: 'err-source' },
+  ];
+  checks.forEach(({ id, err }) => {
+    const el  = document.getElementById(id);
+    const msg = document.getElementById(err);
+    if (!el.value.trim()) {
+      el.classList.add('invalid');
+      msg.style.display = 'block';
+      valid = false;
+    } else {
+      el.classList.remove('invalid');
+      msg.style.display = 'none';
+    }
+  });
+  const catErr = document.getElementById('err-cat');
+  if (!document.querySelector('.cat-card.selected')) {
+    catErr.style.display = 'block';
+    valid = false;
+  } else {
+    catErr.style.display = 'none';
+  }
+  return valid;
+}
+
+// ── Submit
+document.getElementById('nc-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!validate()) return;
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Envoi en cours…';
+
+  const data = {
+    timestamp:        new Date().toLocaleString('fr-FR'),
+    nom:              document.getElementById('f-nom').value.trim(),
+    prenom:           document.getElementById('f-prenom').value.trim(),
+    date_naissance:   document.getElementById('f-dob').value,
+    sexe:             document.getElementById('f-sexe').value,
+    telephone:        document.getElementById('f-tel').value.trim(),
+    whatsapp:         document.getElementById('f-wa').value.trim(),
+    email:            document.getElementById('f-email').value.trim(),
+    ville:            document.getElementById('f-ville').value.trim(),
+    quartier:         document.getElementById('f-quartier').value.trim(),
+    categorie:        document.querySelector('input[name=categorie]:checked')?.value || '',
+    frais:            document.getElementById('frais-amount').textContent,
+    experience:       document.getElementById('f-exp').value,
+    pseudo:           document.getElementById('f-pseudo').value.trim(),
+    lien_realisations: document.getElementById('f-link').value.trim(),
+    motivation:       document.getElementById('f-motiv').value.trim(),
+    source:           document.getElementById('f-source').value,
+  };
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+  } catch (err) {
+    console.warn('Envoi:', err);
+  }
+
+  // Affiche le succès
+  document.getElementById('success-name').textContent = data.prenom + ' ' + data.nom;
+  document.getElementById('nc-form').style.display    = 'none';
+  document.getElementById('success-screen').style.display = 'block';
+  document.querySelector('.progress-wrap').style.display  = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+function resetForm() {
+  document.getElementById('nc-form').reset();
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('frais-amount').textContent = '— FCFA';
+  document.getElementById('frais-note').textContent   = 'Sélectionnez une catégorie ci-dessus';
+  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('progress-pct').textContent  = '0%';
+  document.querySelectorAll('.field-error').forEach(e => e.style.display = 'none');
+  document.querySelectorAll('.invalid').forEach(e => e.classList.remove('invalid'));
+  document.getElementById('nc-form').style.display         = 'block';
+  document.getElementById('success-screen').style.display  = 'none';
+  document.querySelector('.progress-wrap').style.display   = 'block';
+}
+</script>
+</body>
+</html>
