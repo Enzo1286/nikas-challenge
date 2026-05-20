@@ -192,6 +192,11 @@
     background: var(--red-dark);
     transform: translateY(-2px);
   }
+  .btn-submit:disabled {
+    background: #444;
+    border-color: #666;
+    cursor: not-allowed;
+  }
 
   .success-screen { display: none; text-align: center; padding: 2rem; animation: fadeIn 0.5s ease both; }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -236,7 +241,6 @@
   <div class="form-card">
     <form id="nc-form">
       
-      <!-- IDENTITÉ -->
       <fieldset>
         <legend>1. Informations Personnelles</legend>
         <div class="g2">
@@ -265,7 +269,6 @@
         </div>
       </fieldset>
 
-      <!-- CONTACT & LOCALISATION -->
       <fieldset>
         <legend>2. Contact & Localisation</legend>
         <div class="g3">
@@ -294,7 +297,6 @@
         </div>
       </fieldset>
 
-      <!-- PROFIL COMPÉTITEUR -->
       <fieldset>
         <legend>3. Profil Compétiteur</legend>
         <div class="g2">
@@ -401,8 +403,8 @@ function updateFrais() {
   }
 }
 
-// --- SOUMISSION VERS GOOGLE SHEETS ---
-const SCRIPT_URL = ''; // <-- Insérez la NOUVELLE URL du script ici !
+// --- SOUMISSION VERS GOOGLE SHEETS AVEC L'URL INTÉGRÉE ---
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyEEs8WIKggOmWspEGDiDhh2ZIaPiUxQKnEZG5rDsfJVm7o9k1vDTK4E0MLvT6h740X/exec';
 
 document.getElementById('nc-form').addEventListener('submit', function(e) {
   e.preventDefault();
@@ -411,7 +413,7 @@ document.getElementById('nc-form').addEventListener('submit', function(e) {
   submitBtn.disabled = true;
   submitBtn.textContent = "Envoi des données en cours...";
 
-  // Collecte de tous les champs
+  // Collecte ordonnée selon la structure exacte du Google Sheet
   const formData = {
     nom: document.getElementById('f-nom').value,
     prenom: document.getElementById('f-prenom').value,
@@ -423,6 +425,7 @@ document.getElementById('nc-form').addEventListener('submit', function(e) {
     ville: document.getElementById('f-ville').value,
     quartier: document.getElementById('f-quartier').value,
     categorie: document.getElementById('f-categorie').value,
+    frais: document.getElementById('frais-amount').textContent,
     experience: document.getElementById('f-experience').value,
     pseudo: document.getElementById('f-pseudo').value,
     lien: document.getElementById('f-lien').value,
@@ -430,25 +433,18 @@ document.getElementById('nc-form').addEventListener('submit', function(e) {
     source: document.getElementById('f-source').value
   };
 
-  if (SCRIPT_URL) {
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      cache: 'no-cache',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    })
-    .then(() => displaySuccess(formData.prenom, formData.nom))
-    .catch(err => {
-      console.error(err);
-      displaySuccess(formData.prenom, formData.nom); // On affiche quand même le succès à l'utilisateur
-    });
-  } else {
-    // Si SCRIPT_URL est vide, on simule l'envoi
-    setTimeout(() => {
-      displaySuccess(formData.prenom, formData.nom);
-    }, 1000);
-  }
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    cache: 'no-cache',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData)
+  })
+  .then(() => displaySuccess(formData.prenom, formData.nom))
+  .catch(err => {
+    console.error(err);
+    displaySuccess(formData.prenom, formData.nom);
+  });
 });
 
 function displaySuccess(prenom, nom) {
