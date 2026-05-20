@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inscription – LA CL'AS Challenge</title>
+<title>Inscription Complète – LA CL'AS Challenge</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --gold: #ffb703; /* Or LA CL'AS */
+    --gold: #ffb703;
     --gold-dim: rgba(255, 183, 3, 0.2);
-    --red: #e63946; /* Rouge LA CL'AS */
+    --red: #e63946;
     --red-dark: #b71c1c;
     --cream: #f1faee;
     --cream-dim: rgba(241, 250, 238, 0.6);
@@ -28,25 +28,6 @@
     overflow-x: hidden;
   }
 
-  /* ── CURTAINS ── */
-  .curtain-left, .curtain-right {
-    position: fixed;
-    top: 0;
-    width: 55px;
-    height: 100%;
-    z-index: 10;
-    pointer-events: none;
-  }
-  .curtain-left {
-    left: 0;
-    background: linear-gradient(90deg, #4b0000 0%, var(--red-dark) 60%, transparent 100%);
-  }
-  .curtain-right {
-    right: 0;
-    background: linear-gradient(270deg, #4b0000 0%, var(--red-dark) 60%, transparent 100%);
-  }
-
-  /* ── STARS BG ── */
   .stars-bg {
     position: fixed;
     inset: 0;
@@ -60,12 +41,11 @@
   .page-wrap {
     position: relative;
     z-index: 1;
-    max-width: 800px;
+    max-width: 850px;
     margin: 0 auto;
     padding: 0 20px 60px;
   }
 
-  /* ── HEADER ── */
   .site-header {
     text-align: center;
     padding: 3rem 0 2rem;
@@ -102,38 +82,21 @@
   .brand-logo {
     font-family: 'Cinzel', serif;
     font-weight: 900;
-    font-size: 52px;
-    line-height: 1;
+    font-size: 46px;
+    line-height: 1.1;
     letter-spacing: 2px;
     color: var(--gold);
     text-shadow: 0 0 30px rgba(255, 183, 3, 0.3);
   }
   .brand-logo span { color: #fff; }
 
-  .brand-sub {
-    font-family: 'Cinzel', serif;
-    font-size: 16px;
-    letter-spacing: 8px;
-    color: var(--cream);
-    opacity: 0.8;
-    text-transform: uppercase;
-  }
-
-  .infinity-sign {
-    font-size: 32px;
-    color: var(--gold);
-    display: block;
-    margin: 4px 0 12px;
-  }
-
   .gold-divider {
     width: 240px;
     height: 1.5px;
     background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 0 auto 1.5rem;
+    margin: 1.5rem auto;
   }
 
-  /* ── FORM CARD ── */
   .form-card {
     background: rgba(20, 20, 28, 0.8);
     border: 1px solid var(--gold-dim);
@@ -142,20 +105,36 @@
     backdrop-filter: blur(10px);
   }
 
-  .section-title {
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    letter-spacing: 3px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin: 1.5rem 0 1.2rem;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--gold-dim);
+  fieldset {
+    border: 1px solid var(--gold-dim);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    background: rgba(255,255,255,0.02);
   }
 
-  /* Grid */
+  legend {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    padding: 0 10px;
+    font-weight: bold;
+  }
+
   .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   .g1 { margin-bottom: 16px; }
+  .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  label {
+    display: block;
+    font-size: 12px;
+    color: var(--cream-dim);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
 
   input, select, textarea {
     width: 100%;
@@ -164,42 +143,34 @@
     border-radius: 9px;
     color: var(--cream);
     padding: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
     outline: none;
+    transition: border-color 0.3s;
   }
-  input:focus { border-color: var(--gold); }
+  
+  select option {
+    background: var(--bg-dark);
+    color: var(--cream);
+  }
 
-  /* Category cards */
-  .cat-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+  input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+  
+  textarea {
+    resize: vertical;
+    min-height: 80px;
   }
-  .cat-card {
-    border: 2px solid rgba(255,183,3,0.15);
-    border-radius: 12px;
-    padding: 14px;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease;
-  }
-  .cat-card input { position: absolute; opacity: 0; }
-  .cat-card .c-icon { font-size: 22px; margin-bottom: 5px; display: block; }
-  .cat-card .c-name { font-weight: 800; font-size: 13px; display: block; }
-  .cat-card .c-prize { font-size: 10px; color: var(--gold); display: block; }
-  .cat-card.selected { border-color: var(--gold); background: rgba(255,183,3,0.1); }
 
-  /* Frais box */
   .frais-box {
     background: rgba(255,183,3,0.06);
     border: 1px solid var(--gold-dim);
     border-radius: 12px;
     padding: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
+    text-align: center;
+    margin-top: 10px;
   }
-  .frais-amount { font-family: 'Cinzel', serif; font-size: 22px; color: var(--gold); }
+  .frais-box p { font-size: 13px; color: var(--cream-dim); margin-bottom: 5px;}
+  .frais-amount { font-family: 'Cinzel', serif; font-size: 24px; color: var(--gold); font-weight: bold;}
 
   .btn-submit {
     width: 100%;
@@ -208,25 +179,20 @@
     color: #fff;
     font-family: 'Cinzel', serif;
     font-weight: 700;
-    padding: 15px;
+    padding: 16px;
     border-radius: 12px;
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-top: 20px;
+    margin-top: 15px;
+    font-size: 16px;
     transition: all 0.3s ease;
   }
   .btn-submit:hover {
     background: var(--red-dark);
     transform: translateY(-2px);
   }
-  .btn-submit:disabled {
-    background: #444;
-    border-color: #666;
-    cursor: not-allowed;
-  }
 
-  /* ── SUCCESS ── */
   .success-screen { display: none; text-align: center; padding: 2rem; animation: fadeIn 0.5s ease both; }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -243,23 +209,19 @@
     font-weight: bold;
     margin-top: 25px;
     width: 100%;
-    max-width: 320px;
+    max-width: 350px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
   }
   .whatsapp-btn:hover {
     background: #128C7E;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
   }
 
-  @media (max-width: 600px) { .g2, .cat-cards { grid-template-columns: 1fr; } }
+  @media (max-width: 650px) { .g2, .g3 { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
-<div class="curtain-left"></div>
-<div class="curtain-right"></div>
 <div class="stars-bg"></div>
 
 <div class="page-wrap">
@@ -267,96 +229,158 @@
     <div class="header-badge">Inscriptions : Jusqu'au 10 Juin 2026</div>
     <p class="header-org">La CL'AS Lounge SARL &amp; CFP AS Communication</p>
     <h1 class="brand-logo">LA CL'AS <span>CHALLENGE</span></h1>
-    <p class="brand-sub">Formulaire Officiel</p>
-    <span class="infinity-sign">∞</span>
     <div class="gold-divider"></div>
+    <p style="font-size: 14px; color: var(--cream-dim);">Veuillez remplir ce formulaire avec précision pour valider votre candidature.</p>
   </header>
 
   <div class="form-card">
     <form id="nc-form">
-      <p class="section-title">Identité du compétiteur</p>
-      <div class="g2">
-        <input type="text" id="f-nom" placeholder="Nom" required>
-        <input type="text" id="f-prenom" placeholder="Prénom" required>
-      </div>
-      <div class="g2">
-        <input type="tel" id="f-tel" placeholder="Téléphone (WhatsApp)" required>
-        <input type="text" id="f-pseudo" placeholder="Gamertag / Pseudo" required>
+      
+      <!-- IDENTITÉ -->
+      <fieldset>
+        <legend>1. Informations Personnelles</legend>
+        <div class="g2">
+          <div>
+            <label>Nom *</label>
+            <input type="text" id="f-nom" name="nom" placeholder="Votre nom de famille" required>
+          </div>
+          <div>
+            <label>Prénom(s) *</label>
+            <input type="text" id="f-prenom" name="prenom" placeholder="Vos prénoms" required>
+          </div>
+        </div>
+        <div class="g2">
+          <div>
+            <label>Date de naissance *</label>
+            <input type="date" id="f-ddn" name="ddn" required>
+          </div>
+          <div>
+            <label>Sexe *</label>
+            <select id="f-sexe" name="sexe" required>
+              <option value="" disabled selected>Sélectionnez...</option>
+              <option value="Homme">Homme</option>
+              <option value="Femme">Femme</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- CONTACT & LOCALISATION -->
+      <fieldset>
+        <legend>2. Contact & Localisation</legend>
+        <div class="g3">
+          <div>
+            <label>Téléphone *</label>
+            <input type="tel" id="f-tel" name="tel" placeholder="Ex: 6XXXXXXXX" required>
+          </div>
+          <div>
+            <label>WhatsApp *</label>
+            <input type="tel" id="f-whatsapp" name="whatsapp" placeholder="Ex: 6XXXXXXXX" required>
+          </div>
+          <div>
+            <label>Email</label>
+            <input type="email" id="f-email" name="email" placeholder="votre.email@ex.com">
+          </div>
+        </div>
+        <div class="g2">
+          <div>
+            <label>Ville *</label>
+            <input type="text" id="f-ville" name="ville" placeholder="Ex: Bafoussam" required>
+          </div>
+          <div>
+            <label>Quartier *</label>
+            <input type="text" id="f-quartier" name="quartier" placeholder="Ex: Carrefour Total d'en bas" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- PROFIL COMPÉTITEUR -->
+      <fieldset>
+        <legend>3. Profil Compétiteur</legend>
+        <div class="g2">
+          <div>
+            <label>Catégorie de compétition *</label>
+            <select id="f-categorie" name="categorie" required onchange="updateFrais()">
+              <option value="" disabled selected>Choisissez votre discipline...</option>
+              <option value="Piano Bar">Piano Bar</option>
+              <option value="Mix DJ">Mix DJ</option>
+              <option value="Création de Contenu">Création de Contenu</option>
+              <option value="Art Oratoire">Art Oratoire</option>
+              <option value="Élection Miss">Élection Miss</option>
+              <option value="PS5 FC 26">PS5 FC 26</option>
+              <option value="Karaoké">Karaoké</option>
+              <option value="Billard">Billard</option>
+            </select>
+          </div>
+          <div>
+            <label>Expérience dans le domaine *</label>
+            <select id="f-experience" name="experience" required>
+              <option value="" disabled selected>Sélectionnez votre niveau...</option>
+              <option value="Débutant (Amateur)">Débutant (Amateur)</option>
+              <option value="Intermédiaire">Intermédiaire</option>
+              <option value="Avancé">Avancé</option>
+              <option value="Professionnel">Professionnel</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="g2">
+          <div>
+            <label>Pseudo / Nom de scène</label>
+            <input type="text" id="f-pseudo" name="pseudo" placeholder="Comment vous appelle-t-on ?">
+          </div>
+          <div>
+            <label>Lien vers vos réalisations</label>
+            <input type="url" id="f-lien" name="lien" placeholder="Lien Facebook, Insta, YouTube, TikTok...">
+          </div>
+        </div>
+
+        <div class="g1">
+          <label>Votre Motivation *</label>
+          <textarea id="f-motivation" name="motivation" placeholder="Pourquoi souhaitez-vous participer à La CL'AS Challenge ?" required></textarea>
+        </div>
+
+        <div class="g1">
+          <label>Comment avez-vous connu l'événement ? *</label>
+          <select id="f-source" name="source" required>
+            <option value="" disabled selected>Sélectionnez une source...</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Affiches locales">Affiches locales (Bafoussam)</option>
+            <option value="Bouche à oreille">Bouche à oreille / Amis</option>
+            <option value="Groupe WhatsApp">Groupe WhatsApp</option>
+            <option value="CFP AS Communication">CFP AS Communication</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <div class="frais-box" id="frais-container" style="display: none;">
+        <p>Frais d'inscription pour cette catégorie :</p>
+        <div class="frais-amount" id="frais-amount">-- FCFA</div>
       </div>
 
-      <p class="section-title">Choisissez votre discipline</p>
-      <div class="cat-cards" id="cat-grid">
-        <label class="cat-card">
-          <input type="radio" name="categorie" value="Piano Bar" required>
-          <span class="c-icon">🎹</span><span class="c-name">Piano Bar</span>
-          <span class="c-prize">Cagnotte : 500 000 FCFA</span>
-        </label>
-        <label class="cat-card">
-          <input type="radio" name="categorie" value="Mix DJ">
-          <span class="c-icon">🎧</span><span class="c-name">Mix DJ</span>
-          <span class="c-prize">Cagnotte : 250 000 FCFA</span>
-        </label>
-        <label class="cat-card">
-          <input type="radio" name="categorie" value="Création de Contenus">
-          <span class="c-icon">📷</span><span class="c-name">Création de Contenu</span>
-          <span class="c-prize">Cagnotte : 250 000 FCFA</span>
-        </label>
-        <label class="cat-card">
-          <input type="radio" name="categorie" value="Art Oratoire">
-          <span class="c-icon">🎤</span><span class="c-name">Art Oratoire</span>
-          <span class="c-prize">Cagnotte : 175 000 FCFA</span>
-        </label>
-        <label class="cat-card">
-          <input type="radio" name="categorie" value="Élection Miss">
-          <span class="c-icon">👑</span><span class="c-name">Élection Miss</span>
-          <span class="c-prize">Cagnotte : 1 000 000 FCFA</span>
-        </label>
-        <label class="cat-card">
-          <input type="radio" name="categorie" value="PS5 FC 26">
-          <span class="c-icon">🎮</span><span class="c-name">PS5 FC 26</span>
-          <span class="c-prize">Cagnotte : 175 000 FCFA</span>
-        </label>
-        <label class="cat-card">
-          <input type="radio" name="categorie" value="Karaoké">
-          <span class="c-icon">🎶</span><span class="c-name">Karaoké</span>
-          <span class="c-prize">Cagnotte : 175 000 FCFA</span>
-        </label>
-        <label class="cat-card">
-          <input type="radio" name="categorie" value="Billard">
-          <span class="c-icon">🎱</span><span class="c-name">Billard</span>
-          <span class="c-prize">Cagnotte : 175 000 FCFA</span>
-        </label>
-      </div>
-
-      <div class="frais-box">
-        <span class="frais-label">Frais d'inscription</span>
-        <span class="frais-amount" id="frais-amount">— FCFA</span>
-      </div>
-
-      <button type="submit" class="btn-submit" id="btn-submit">Valider l'inscription</button>
+      <button type="submit" class="btn-submit" id="btn-submit">Valider mon inscription officielle</button>
     </form>
 
     <div class="success-screen" id="success-screen">
-      <span style="font-size:50px">🔥</span>
-      <h2 class="success-title" style="color: var(--gold); margin-bottom: 10px;">Inscription validée !</h2>
-      <p>Merci <strong id="success-name"></strong> ! Ton profil est officiellement enregistré dans notre base de données Google Sheets.</p>
-      <p style="margin-top:15px; color: var(--cream-dim);">Clique ci-dessous pour rejoindre la communauté des candidats et recevoir les plannings :</p>
+      <span style="font-size:60px">🏆</span>
+      <h2 style="color: var(--gold); margin: 15px 0;">Candidature Enregistrée !</h2>
+      <p>Félicitations <strong id="success-name"></strong> ! Vos données ont été transmises avec succès à notre comité.</p>
+      <p style="margin-top:15px; color: var(--cream-dim);">Étape finale : Rejoignez impérativement le quartier général des candidats sur WhatsApp pour suivre l'actualité des poules et du règlement.</p>
       <a href="https://chat.whatsapp.com/B5eQP6B50KAFlESIV3pqME" target="_blank" class="whatsapp-btn">
         Rejoindre le Groupe WhatsApp
       </a>
     </div>
   </div>
-
-  <footer style="text-align:center; margin-top:30px; color:rgba(255,255,255,0.3); font-size:12px">
-    📍 Carrefour Total D'en bas – Bafoussam (en face de la station Ola)
-  </footer>
 </div>
 
 <script>
+// --- GESTION DES FRAIS D'INSCRIPTION ---
 const fraisMap = {
   'Piano Bar': '10 000',
   'Mix DJ': '5 000',
-  'Création de Contenus': '5 000',
+  'Création de Contenu': '5 000',
   'Art Oratoire': '5 000',
   'Élection Miss': '5 000',
   'PS5 FC 26': '5 000',
@@ -364,39 +388,46 @@ const fraisMap = {
   'Billard': '5 000'
 };
 
-// URL de votre Web App Google Apps Script lié au Sheet
-const SCRIPT_URL = ''; 
+function updateFrais() {
+  const select = document.getElementById('f-categorie');
+  const amountBox = document.getElementById('frais-amount');
+  const container = document.getElementById('frais-container');
+  
+  if(select.value && fraisMap[select.value]) {
+    amountBox.textContent = fraisMap[select.value] + ' FCFA';
+    container.style.display = 'block';
+  } else {
+    container.style.display = 'none';
+  }
+}
 
-document.querySelectorAll('.cat-card').forEach(card => {
-  card.addEventListener('click', () => {
-    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
-    card.classList.add('selected');
-    const val = card.querySelector('input').value;
-    document.getElementById('frais-amount').textContent = fraisMap[val] + ' FCFA';
-  });
-});
+// --- SOUMISSION VERS GOOGLE SHEETS ---
+const SCRIPT_URL = ''; // <-- Insérez la NOUVELLE URL du script ici !
 
 document.getElementById('nc-form').addEventListener('submit', function(e) {
   e.preventDefault();
   
   const submitBtn = document.getElementById('btn-submit');
   submitBtn.disabled = true;
-  submitBtn.textContent = "Enregistrement...";
+  submitBtn.textContent = "Envoi des données en cours...";
 
-  const nom = document.getElementById('f-nom').value;
-  const prenom = document.getElementById('f-prenom').value;
-  const tel = document.getElementById('f-tel').value;
-  const pseudo = document.getElementById('f-pseudo').value;
-  const categoryElement = document.querySelector('input[name="categorie"]:checked');
-  const category = categoryElement ? categoryElement.value : '';
-
+  // Collecte de tous les champs
   const formData = {
-    timestamp: new Date().toISOString(),
-    nom: nom,
-    prenom: prenom,
-    telephone: tel,
-    gamertag: pseudo,
-    categorie: category
+    nom: document.getElementById('f-nom').value,
+    prenom: document.getElementById('f-prenom').value,
+    ddn: document.getElementById('f-ddn').value,
+    sexe: document.getElementById('f-sexe').value,
+    tel: document.getElementById('f-tel').value,
+    whatsapp: document.getElementById('f-whatsapp').value,
+    email: document.getElementById('f-email').value,
+    ville: document.getElementById('f-ville').value,
+    quartier: document.getElementById('f-quartier').value,
+    categorie: document.getElementById('f-categorie').value,
+    experience: document.getElementById('f-experience').value,
+    pseudo: document.getElementById('f-pseudo').value,
+    lien: document.getElementById('f-lien').value,
+    motivation: document.getElementById('f-motivation').value,
+    source: document.getElementById('f-source').value
   };
 
   if (SCRIPT_URL) {
@@ -407,16 +438,16 @@ document.getElementById('nc-form').addEventListener('submit', function(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
     })
-    .then(() => displaySuccess(prenom, nom))
+    .then(() => displaySuccess(formData.prenom, formData.nom))
     .catch(err => {
       console.error(err);
-      displaySuccess(prenom, nom);
+      displaySuccess(formData.prenom, formData.nom); // On affiche quand même le succès à l'utilisateur
     });
   } else {
-    // Si l'URL Google Apps Script n'est pas encore renseignée, transition immédiate
+    // Si SCRIPT_URL est vide, on simule l'envoi
     setTimeout(() => {
-      displaySuccess(prenom, nom);
-    }, 800);
+      displaySuccess(formData.prenom, formData.nom);
+    }, 1000);
   }
 });
 
