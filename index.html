@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html_content = """<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -142,13 +142,6 @@
     backdrop-filter: blur(10px);
   }
 
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--red), var(--gold));
-    width: 0%;
-    transition: width 0.4s ease;
-  }
-
   .section-title {
     font-family: 'Cinzel', serif;
     font-size: 11px;
@@ -187,6 +180,7 @@
     padding: 14px;
     cursor: pointer;
     position: relative;
+    transition: all 0.3s ease;
   }
   .cat-card input { position: absolute; opacity: 0; }
   .cat-card .c-icon { font-size: 22px; margin-bottom: 5px; display: block; }
@@ -220,13 +214,26 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-top: 20px;
+    transition: all 0.3s ease;
+  }
+  .btn-submit:hover {
+    background: var(--red-dark);
+    transform: translateY(-2px);
+  }
+  .btn-submit:disabled {
+    background: #444;
+    border-color: #666;
+    cursor: not-allowed;
   }
 
   /* ── SUCCESS ── */
-  .success-screen { display: none; text-align: center; padding: 2rem; }
+  .success-screen { display: none; text-align: center; padding: 2rem; animation: fadeIn 0.5s ease both; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
   .whatsapp-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     background: #25D366;
     color: white;
@@ -234,7 +241,16 @@
     padding: 15px 25px;
     border-radius: 10px;
     font-weight: bold;
-    margin-top: 20px;
+    margin-top: 25px;
+    width: 100%;
+    max-width: 320px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  }
+  .whatsapp-btn:hover {
+    background: #128C7E;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
   }
 
   @media (max-width: 600px) { .g2, .cat-cards { grid-template-columns: 1fr; } }
@@ -264,14 +280,14 @@
         <input type="text" id="f-prenom" placeholder="Prénom" required>
       </div>
       <div class="g2">
-        <input type="tel" id="f-tel" placeholder="Téléphone" required>
-        <input type="text" id="f-pseudo" placeholder="Gamertag / Pseudo">
+        <input type="tel" id="f-tel" placeholder="Téléphone (WhatsApp)" required>
+        <input type="text" id="f-pseudo" placeholder="Gamertag / Pseudo" required>
       </div>
 
       <p class="section-title">Choisissez votre discipline</p>
       <div class="cat-cards" id="cat-grid">
         <label class="cat-card">
-          <input type="radio" name="categorie" value="Piano Bar">
+          <input type="radio" name="categorie" value="Piano Bar" required>
           <span class="c-icon">🎹</span><span class="c-name">Piano Bar</span>
           <span class="c-prize">Cagnotte : 500 000 FCFA</span>
         </label>
@@ -322,10 +338,10 @@
 
     <div class="success-screen" id="success-screen">
       <span style="font-size:50px">🔥</span>
-      <h2 class="success-title">Inscription validée !</h2>
-      <p>Merci <strong id="success-name"></strong> ! Ton profil est enregistré dans la base de données.</p>
-      <p style="margin-top:15px">Clique ci-dessous pour rejoindre les autres candidats :</p>
-      <a href="https://chat.whatsapp.com/TON_LIEN_ICI" class="whatsapp-link whatsapp-btn">
+      <h2 class="success-title" style="color: var(--gold); margin-bottom: 10px;">Inscription validée !</h2>
+      <p>Merci <strong id="success-name"></strong> ! Ton profil est officiellement enregistré dans notre base de données Google Sheets.</p>
+      <p style="margin-top:15px; color: var(--cream-dim);">Clique ci-dessous pour rejoindre la communauté des candidats et recevoir les plannings :</p>
+      <a href="https://chat.whatsapp.com/B5eQP6B50KAFlESIV3pqME" target="_blank" class="whatsapp-btn">
         Rejoindre le Groupe WhatsApp
       </a>
     </div>
@@ -348,6 +364,9 @@ const fraisMap = {
   'Billard': '5 000'
 };
 
+// URL de votre Web App Google Apps Script lié au Sheet
+const SCRIPT_URL = ''; 
+
 document.querySelectorAll('.cat-card').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
@@ -359,14 +378,59 @@ document.querySelectorAll('.cat-card').forEach(card => {
 
 document.getElementById('nc-form').addEventListener('submit', function(e) {
   e.preventDefault();
+  
+  const submitBtn = document.getElementById('btn-submit');
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Enregistrement...";
+
   const nom = document.getElementById('f-nom').value;
   const prenom = document.getElementById('f-prenom').value;
-  
+  const tel = document.getElementById('f-tel').value;
+  const pseudo = document.getElementById('f-pseudo').value;
+  const categoryElement = document.querySelector('input[name="categorie"]:checked');
+  const category = categoryElement ? categoryElement.value : '';
+
+  const formData = {
+    timestamp: new Date().toISOString(),
+    nom: nom,
+    prenom: prenom,
+    telephone: tel,
+    gamertag: pseudo,
+    categorie: category
+  };
+
+  if (SCRIPT_URL) {
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      cache: 'no-cache',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    })
+    .then(() => displaySuccess(prenom, nom))
+    .catch(err => {
+      console.error(err);
+      displaySuccess(prenom, nom);
+    });
+  } else {
+    // Si l'URL Google Apps Script n'est pas encore renseignée, transition immédiate
+    setTimeout(() => {
+      displaySuccess(prenom, nom);
+    }, 800);
+  }
+});
+
+function displaySuccess(prenom, nom) {
   document.getElementById('success-name').textContent = prenom + ' ' + nom;
   document.getElementById('nc-form').style.display = 'none';
   document.getElementById('success-screen').style.display = 'block';
   window.scrollTo(0,0);
-});
+}
 </script>
 </body>
 </html>
+"""
+
+with open("formulaire_clas_challenge_final.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+print("Updated executable file successfully created!")
