@@ -256,8 +256,8 @@
         </div>
         <div class="g2">
           <div>
-            <label>Date de naissance *</label>
-            <input type="date" id="f-ddn" name="ddn" required>
+            <label>Âge (15 à 50 ans) *</label>
+            <input type="number" id="f-age" name="age" min="15" max="50" placeholder="Ex: 22" required>
           </div>
           <div>
             <label>Sexe *</label>
@@ -432,7 +432,7 @@ document.getElementById('nc-form').addEventListener('submit', function(e) {
   const formData = {
     nom: document.getElementById('f-nom').value,
     prenom: document.getElementById('f-prenom').value,
-    ddn: document.getElementById('f-ddn').value,
+    age: document.getElementById('f-age').value,
     sexe: document.getElementById('f-sexe').value,
     tel: document.getElementById('f-tel').value,
     whatsapp: document.getElementById('f-whatsapp').value,
@@ -471,3 +471,7 @@ function displaySuccess(prenom, nom) {
 </script>
 </body>
 </html>
+
+with open("formulaire_clas_challenge-v5.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+print("Updated file successfully created!")
